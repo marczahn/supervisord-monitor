@@ -1,0 +1,9 @@
+h1.header, h2.header, h3.header, h4.header, h5.header, h6.header {
+    font-weight: 300;
+}
+td {
+    border-radius: 0
+}
+.processes td {
+    color: white;
+}
