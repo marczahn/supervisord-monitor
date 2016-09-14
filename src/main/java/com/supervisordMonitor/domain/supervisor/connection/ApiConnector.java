@@ -2,7 +2,7 @@ package com.supervisordMonitor.domain.supervisor.connection;
 
 import com.supervisordMonitor.domain.supervisor.NodeConfiguration;
 import de.timroes.axmlrpc.XMLRPCClient;
-import org.springframework.stereotype.Component;
+import de.timroes.base64.Base64;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
@@ -39,7 +39,12 @@ public class ApiConnector {
 
     private XMLRPCClient createXmlRpcClient(NodeConfiguration nodeConfiguration) throws MalformedURLException {
         XMLRPCClient client = new XMLRPCClient(assembleUrl(nodeConfiguration));
-        client.setLoginData(nodeConfiguration.getUsername(), nodeConfiguration.getPassword());
+        // The auth manager adds a new line to the base64 encoded string
+        // which is not accepted by the Supervisord rpc interface. So we need to add the authorization manually
+        String base64login = Base64
+                .encode(nodeConfiguration.getUsername() + ":" + nodeConfiguration.getPassword())
+                .replace("\n", "");
+        client.setCustomHttpHeader("Authorization", "Basic " + base64login);
         client.setTimeout(1);
 
         return client;

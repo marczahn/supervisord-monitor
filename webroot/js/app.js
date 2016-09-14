@@ -14,9 +14,25 @@ function getColorClassesForStatus(status) {
 
 var NodeList = React.createClass({
     getInitialState: function() {
-        return {nodes: []};
+        return {nodes: [], loaded: false};
     },
     render: function() {
+        if (!this.state.loaded) {
+            return (
+                <div className="progress">
+                    <div className="indeterminate"></div>
+                </div>
+            )
+        }
+
+        return (
+            <div className="row">
+                {this.state.nodes.map(function(node, i) {
+                    return <NodeItem node={node}/>
+                })}
+            </div>
+        );
+
         return (
             <div className="node-list">
                 {this.state.nodes.map(function(node, i) {
@@ -35,7 +51,8 @@ var NodeList = React.createClass({
                 return response.json();
             }).then(function(nodes) {
                 self.setState({
-                    nodes: nodes
+                    nodes: nodes,
+                    loaded: true
                 });
             });
         };
@@ -48,9 +65,51 @@ var NodeItem = React.createClass({
     render: function() {
         var node = this.props.node;
         var stateClass = 'new badge ' + (node.state.name == 'RUNNING' ? 'green' : 'red');
+        var classRunning = "collection-item " + getColorClassesForStatus('RUNNING');
+        var classStopped= "collection-item " + getColorClassesForStatus('STOPPED');
+        var classExited = "collection-item " + getColorClassesForStatus('FATAL');
+
+        var countRunning = node.processes.reduce(function(accumulator, process) {
+            if (process.state.name == 'RUNNING') {
+                accumulator++;
+            }
+
+            return accumulator;
+        }, 0);
+
+        var countStopped = node.processes.reduce(function(accumulator, process) {
+            if (process.state.name == 'STOPPED') {
+                accumulator++;
+            }
+
+            return accumulator;
+        }, 0);
+
+        var countExited = node.processes.reduce(function(accumulator, process) {
+            if (process.state.name == 'FATAL') {
+                accumulator++;
+            }
+
+            return accumulator;
+        }, 0);
 
         return (
-            <section class="node">
+            <div className="col s12 m3">
+                <div className="card">
+                    <div className="card-content">
+                        <span className="card-title">{node.name}<span className={stateClass} data-badge-caption={node.state.name || "UNREACHABLE"}/></span>
+                        <ul className="collection">
+                            <li className={classRunning}>RUNNING: {countRunning}</li>
+                            <li className={classStopped}>STOPPED: {countStopped}</li>
+                            <li className={classExited}>EXITED {countExited}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        )
+
+        return (
+            <section className="node">
                 <h4 className="header">{node.name}<span className={stateClass} data-badge-caption={node.state.name}/></h4>
                 <table className="processes responsive-table bordered">
                     <thead>
