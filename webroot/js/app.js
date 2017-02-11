@@ -94,21 +94,6 @@ var NodeItem = React.createClass({
         }, 0);
 
         return (
-            <div className="col s12 m3">
-                <div className="card">
-                    <div className="card-content">
-                        <span className="card-title">{node.name}<span className={stateClass} data-badge-caption={node.state.name || "UNREACHABLE"}/></span>
-                        <ul className="collection">
-                            <li className={classRunning}>RUNNING: {countRunning}</li>
-                            <li className={classStopped}>STOPPED: {countStopped}</li>
-                            <li className={classExited}>EXITED {countExited}</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        )
-
-        return (
             <section className="node">
                 <h4 className="header">{node.name}<span className={stateClass} data-badge-caption={node.state.name}/></h4>
                 <table className="processes responsive-table bordered">

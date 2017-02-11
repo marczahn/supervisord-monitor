@@ -53,6 +53,7 @@ public class HttpServer extends AbstractVerticle {
                 response.setStatusCode(500).end(e.getMessage());
             }
         });
+//        router.get("/web/*").handler(StaticHandler.create("webroot/build/production/SupervisorMonitor"));
         router.get("/web/*").handler(StaticHandler.create());
 
         vertx

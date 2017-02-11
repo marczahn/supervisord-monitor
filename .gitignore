@@ -2,3 +2,4 @@
 .idea
 supervisord-monitor.iml
 target
+/servers.json

@@ -2,6 +2,7 @@ package com.supervisordMonitor.domain.supervisor.dto;
 
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @JsonAutoDetect
 public class ProcessDto {
@@ -28,10 +29,10 @@ public class ProcessDto {
     public ProcessDto(Map<String, Object> response) {
         name = response.getOrDefault("name", "Undefined").toString();
         group = response.getOrDefault("group", "Undefined").toString();
-        description = response.getOrDefault("description", "Undefined").toString();
+//        description = response.getOrDefault("description", "Undefined").toString();
         start = response.containsKey("start") ? (Integer)response.get("start") : null;
         stop = response.containsKey("stop") ? (Integer)response.get("stop") : null;
-        now = response.containsKey("now") ? (Integer)response.get("now") : null;
+//        now = response.containsKey("now") ? (Integer)response.get("now") : null;
         state = new StateDto(response);
         spawnError = response.getOrDefault("spawnerr", "").toString();
         exitStatus = (Integer) response.getOrDefault("exitstatus", null);
