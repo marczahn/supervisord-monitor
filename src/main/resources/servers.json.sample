@@ -1,0 +1,9 @@
+[
+  {
+    "name": "<name>",
+    "host": "<host>",
+    "port": 14138,
+    "username": "<username>",
+    "password": "<password>"
+  }
+]
