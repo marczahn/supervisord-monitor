@@ -112,7 +112,7 @@ var NodeItem = React.createClass({
 
                             var started = (new Date(process.start * 1000)).toUTCString();
                             var stopped = '-';
-                            if (process.stop != 0) {
+                            if (process.stop != 0 && process.state.name != 'RUNNING') {
                                 started = '-';
                                 stopped = (new Date(process.stop * 1000)).toUTCString();
                             }
